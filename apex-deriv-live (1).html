@@ -837,55 +837,68 @@ function runFullScan() {
   document.getElementById('scannerRows').innerHTML = `
     <div class="scan-loading">
       <div class="spin-ring"></div>
-      <div class="scan-msg" id="scanMsg">Solicitando datos de mercado...<br><em>0 / ${SYNTHETICS.length * TIMEFRAMES.length} timeframes</em></div>
+      <div class="scan-msg" id="scanMsg">Conectando a Deriv...<br><em>Iniciando scanner</em></div>
     </div>`;
 
   // Unsubscribe old ticks
   Object.keys(tickSubs).forEach(s => {
-    ws.send(JSON.stringify({ forget: tickSubs[s] }));
+    try { ws.send(JSON.stringify({ forget: tickSubs[s] })); } catch(e){}
   });
   tickSubs = {};
 
-  // Subscribe to live ticks
-  SYNTHETICS.forEach(asset => {
-    ws.send(JSON.stringify({
-      ticks: asset.id,
-      subscribe: 1
-    }));
+  // Subscribe to live ticks — staggered
+  SYNTHETICS.forEach((asset, i) => {
+    setTimeout(() => {
+      try { ws.send(JSON.stringify({ ticks: asset.id, subscribe: 1 })); } catch(e){}
+    }, i * 80);
   });
 
-  // Request candles for analysis (last 100 candles per TF)
-  // We use a subset of TFs to avoid rate limits: 1D, 4H, 1H, 15m, 5m, 1m
-  const analysisTFs = [86400, 14400, 3600, 900, 300, 60];
+  // Request only 1D candles to avoid overload — fast and reliable
+  const analysisTF = 86400;
   let reqId = 1000;
 
-  SYNTHETICS.forEach(asset => {
-    analysisTFs.forEach(tf => {
-      scanExpected++;
-      const id = reqId++;
-      pendingCandles[id] = { symbol: asset.id, tf };
-      ws.send(JSON.stringify({
-        ticks_history: asset.id,
-        adjust_start_time: 1,
-        count: 60,
-        end: 'latest',
-        granularity: tf,
-        style: 'candles',
-        req_id: id
-      }));
-    });
+  SYNTHETICS.forEach((asset, i) => {
+    scanExpected++;
+    const id = reqId++;
+    pendingCandles[id] = { symbol: asset.id, tf: analysisTF };
+    setTimeout(() => {
+      try {
+        ws.send(JSON.stringify({
+          ticks_history: asset.id,
+          adjust_start_time: 1,
+          count: 50,
+          end: 'latest',
+          granularity: analysisTF,
+          style: 'candles',
+          req_id: id
+        }));
+      } catch(e) {
+        // Count as received even on error so scan completes
+        scanReceived++;
+        checkScanComplete();
+      }
+    }, 500 + i * 200);
   });
+
+  // Safety timeout — if after 45s not all responses received, process what we have
+  setTimeout(() => {
+    if (scanInProgress) {
+      console.warn('Scan timeout — processing partial results');
+      scanReceived = scanExpected;
+      processAnalysis();
+    }
+  }, 45000);
 }
 
 function checkScanComplete() {
   scanReceived++;
-  const total = SYNTHETICS.length * 6; // 6 TFs
+  const total = scanExpected;
   const pct = Math.round(scanReceived / total * 100);
   const msg = document.getElementById('scanMsg');
-  if (msg) msg.innerHTML = `Analizando estructura de mercado...<br><em>${scanReceived} / ${total} timeframes (${pct}%)</em>`;
+  if (msg) msg.innerHTML = `Analizando mercado...<br><em>${scanReceived} / ${total} activos (${pct}%)</em>`;
 
   if (scanReceived >= total) {
-    setTimeout(processAnalysis, 200);
+    setTimeout(processAnalysis, 300);
   }
 }
 
@@ -1010,8 +1023,8 @@ function findSwingLows(lows, lookback) {
 
 function processAnalysis() {
   analysisResults = [];
-  const analysisTFs = [86400, 14400, 3600, 900, 300, 60];
-  const tfLabels = { 86400:'1DÍA', 14400:'4H', 3600:'1H', 900:'15m', 300:'5m', 60:'1m' };
+  const analysisTFs = [86400];
+  const tfLabels = { 86400:'1DÍA' };
 
   SYNTHETICS.forEach(asset => {
     const tfResults = {};
@@ -1166,7 +1179,7 @@ function renderDetail(a) {
   if (!a) return;
   document.getElementById('mtfAsset').textContent = a.sym;
 
-  const tfLabels = ['1DÍA','4H','1H','15m','5m','1m'];
+  const tfLabels = ['1DÍA'];
   const html = tfLabels.map(tf => {
     const r = a.tfResults[tf];
     if (!r) return `<div class="tf-cell"><div class="tf-label">${tf}</div><div class="tf-t" style="color:var(--dim)">—</div><div class="tf-s">sin datos</div></div>`;
