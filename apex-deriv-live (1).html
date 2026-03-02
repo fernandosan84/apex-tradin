@@ -1038,50 +1038,48 @@ function processAnalysis() {
     const reasons = [];
     const validTFs = Object.values(tfResults).filter(Boolean);
 
-    if (validTFs.length === 0) { score = 0; }
+    if (validTFs.length === 0) { score = 20; }
     else {
-      // Trend alignment
-      const trends = validTFs.map(t => t.trend);
-      const bullCount = trends.filter(t => t === 'ALCISTA').length;
-      const bearCount = trends.filter(t => t === 'BAJISTA').length;
-      const masterTrend = bullCount >= bearCount ? (bullCount > 1 ? 'ALCISTA' : 'RANGO') : 'BAJISTA';
-      const alignedCount = Math.max(bullCount, bearCount);
+      const r = validTFs[0]; // single TF result
 
-      score += alignedCount * 8;
-      if (alignedCount >= 4) reasons.push(`${alignedCount}/${validTFs.length} timeframes alineados en ${masterTrend}`);
+      // Base score for having data
+      score += 30;
 
-      // BOS/ChoCH
-      const bosCount = validTFs.filter(t => t.bos).length;
-      const chochCount = validTFs.filter(t => t.choch).length;
-      score += bosCount * 6 + chochCount * 4;
-      if (bosCount > 0) reasons.push(`${bosCount} rompimientos BOS confirmados`);
-      if (chochCount > 0) reasons.push(`ChoCH detectado — posible cambio de tendencia`);
+      // Trend clarity
+      const bullCount = validTFs.filter(t => t.trend === 'ALCISTA').length;
+      const bearCount = validTFs.filter(t => t.trend === 'BAJISTA').length;
+      const masterTrend = bullCount > bearCount ? 'ALCISTA' : bearCount > bullCount ? 'BAJISTA' : 'RANGO';
 
-      // OB
-      const obCount = validTFs.filter(t => t.obHigh).length;
-      score += obCount * 4;
-      if (obCount >= 2) reasons.push(`${obCount} Order Blocks activos en estructura`);
-
-      // FVG
-      const fvgCount = validTFs.filter(t => t.fvg).length;
-      score += fvgCount * 3;
-      if (fvgCount >= 2) reasons.push(`${fvgCount} Fair Value Gaps (imbalances) identificados`);
-
-      // Liquidity
-      const bslCount = validTFs.filter(t => t.bsl).length;
-      const sslCount = validTFs.filter(t => t.ssl).length;
-      if (bslCount > 0 || sslCount > 0) {
-        score += 12;
-        reasons.push(`Liquidez ${bslCount > sslCount ? 'BSL' : 'SSL'} visible — objetivo institucional`);
+      if (masterTrend !== 'RANGO') {
+        score += 20;
+        reasons.push(`Tendencia ${masterTrend} clara en estructura diaria`);
       }
 
-      // Boom/Crash alignment bonus
-      const isBoom = asset.cat === 'BOOM/CRASH' && asset.id.includes('BOOM');
-      const isCrash = asset.cat === 'BOOM/CRASH' && asset.id.includes('CRASH');
-      if (isBoom && masterTrend === 'ALCISTA') { score += 15; reasons.push('Boom Index con sesgo alcista institucional'); }
-      if (isCrash && masterTrend === 'BAJISTA') { score += 15; reasons.push('Crash Index con sesgo bajista institucional'); }
+      // BOS/ChoCH
+      if (r.bos) { score += 15; reasons.push('BOS confirmado — rompimiento estructural activo'); }
+      if (r.choch) { score += 12; reasons.push('ChoCH detectado — posible cambio de tendencia'); }
 
-      score = Math.round(Math.min(97, score + (Math.random() * 5)));
+      // OB
+      if (r.obHigh) { score += 10; reasons.push('Order Block activo identificado en estructura'); }
+
+      // FVG
+      if (r.fvg) { score += 8; reasons.push('Fair Value Gap (imbalance) visible'); }
+
+      // Liquidity
+      if (r.bsl) { score += 10; reasons.push('BSL visible — liquidez alcista como objetivo'); }
+      if (r.ssl) { score += 10; reasons.push('SSL visible — liquidez bajista como objetivo'); }
+
+      // Structure quality
+      if (r.struct === 'HH/HL') { score += 8; reasons.push('Estructura alcista HH/HL confirmada'); }
+      if (r.struct === 'LH/LL') { score += 8; reasons.push('Estructura bajista LH/LL confirmada'); }
+
+      // Boom/Crash bonus
+      const isBoom  = asset.cat === 'BOOM/CRASH' && asset.id.includes('BOOM');
+      const isCrash = asset.cat === 'BOOM/CRASH' && asset.id.includes('CRASH');
+      if (isBoom  && masterTrend === 'ALCISTA') { score += 10; reasons.push('Boom Index alineado con tendencia alcista'); }
+      if (isCrash && masterTrend === 'BAJISTA') { score += 10; reasons.push('Crash Index alineado con tendencia bajista'); }
+
+      score = Math.round(Math.min(97, score + (Math.random() * 8)));
 
       // Price levels
       const last1D = tfResults['1DÍA'];
@@ -1092,12 +1090,10 @@ function processAnalysis() {
       analysisResults.push({
         ...asset,
         tfResults,
-        masterTrend: validTFs.length > 0
-          ? (bullCount > bearCount ? 'ALCISTA' : bearCount > bullCount ? 'BAJISTA' : 'RANGO')
-          : 'RANGO',
+        masterTrend,
         score,
         reasons,
-        operable: score >= 68 ? 'YES' : score >= 48 ? 'WATCH' : 'NO',
+        operable: score >= 65 ? 'YES' : score >= 50 ? 'WATCH' : 'NO',
         price,
         resH: lastH,
         supL: lastL,
