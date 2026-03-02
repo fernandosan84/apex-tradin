@@ -681,26 +681,42 @@ body::before {
 const DERIV_WS_URL = 'wss://ws.binaryws.com/websockets/v3?app_id=1089';
 
 const SYNTHETICS = [
-  { id: 'R_10',   sym: 'V10',    name: 'Volatility 10',  cat: 'VOLATILITY' },
-  { id: 'R_25',   sym: 'V25',    name: 'Volatility 25',  cat: 'VOLATILITY' },
-  { id: 'R_50',   sym: 'V50',    name: 'Volatility 50',  cat: 'VOLATILITY' },
-  { id: 'R_75',   sym: 'V75',    name: 'Volatility 75',  cat: 'VOLATILITY' },
-  { id: 'R_100',  sym: 'V100',   name: 'Volatility 100', cat: 'VOLATILITY' },
-  { id: '1HZ10V', sym: 'V10 1s', name: 'Vol 10 (1s)',    cat: 'VOLATILITY' },
-  { id: '1HZ25V', sym: 'V25 1s', name: 'Vol 25 (1s)',    cat: 'VOLATILITY' },
-  { id: '1HZ50V', sym: 'V50 1s', name: 'Vol 50 (1s)',    cat: 'VOLATILITY' },
-  { id: '1HZ75V', sym: 'V75 1s', name: 'Vol 75 (1s)',    cat: 'VOLATILITY' },
-  { id: '1HZ100V',sym: 'V100 1s',name: 'Vol 100 (1s)',   cat: 'VOLATILITY' },
-  { id: 'BOOM500', sym: 'BM500',  name: 'Boom 500',      cat: 'BOOM/CRASH' },
-  { id: 'BOOM1000',sym: 'BM1000', name: 'Boom 1000',     cat: 'BOOM/CRASH' },
-  { id: 'CRASH500', sym:'CR500',  name: 'Crash 500',     cat: 'BOOM/CRASH' },
-  { id: 'CRASH1000',sym:'CR1000', name: 'Crash 1000',    cat: 'BOOM/CRASH' },
-  { id: 'stpRNG2', sym: 'STEP',   name: 'Step Index',    cat: 'SPECIAL' },
-  { id: 'JD10',   sym: 'JMP10',   name: 'Jump 10',       cat: 'JUMP' },
-  { id: 'JD25',   sym: 'JMP25',   name: 'Jump 25',       cat: 'JUMP' },
-  { id: 'JD50',   sym: 'JMP50',   name: 'Jump 50',       cat: 'JUMP' },
-  { id: 'JD75',   sym: 'JMP75',   name: 'Jump 75',       cat: 'JUMP' },
-  { id: 'JD100',  sym: 'JMP100',  name: 'Jump 100',      cat: 'JUMP' },
+  // ── VOLATILITY (tick) ──
+  { id: 'R_10',     sym: 'V10',      name: 'Volatility 10',      cat: 'VOLATILITY' },
+  { id: 'R_25',     sym: 'V25',      name: 'Volatility 25',      cat: 'VOLATILITY' },
+  { id: 'R_50',     sym: 'V50',      name: 'Volatility 50',      cat: 'VOLATILITY' },
+  { id: 'R_75',     sym: 'V75',      name: 'Volatility 75',      cat: 'VOLATILITY' },
+  { id: 'R_100',    sym: 'V100',     name: 'Volatility 100',     cat: 'VOLATILITY' },
+  // ── VOLATILITY (1s) ──
+  { id: '1HZ10V',   sym: 'V10(1s)',  name: 'Volatility 10 (1s)', cat: 'VOLATILITY' },
+  { id: '1HZ25V',   sym: 'V25(1s)',  name: 'Volatility 25 (1s)', cat: 'VOLATILITY' },
+  { id: '1HZ50V',   sym: 'V50(1s)',  name: 'Volatility 50 (1s)', cat: 'VOLATILITY' },
+  { id: '1HZ75V',   sym: 'V75(1s)',  name: 'Volatility 75 (1s)', cat: 'VOLATILITY' },
+  { id: '1HZ100V',  sym: 'V100(1s)', name: 'Volatility 100 (1s)',cat: 'VOLATILITY' },
+  { id: '1HZ150V',  sym: 'V150(1s)', name: 'Volatility 150 (1s)',cat: 'VOLATILITY' },
+  { id: '1HZ250V',  sym: 'V250(1s)', name: 'Volatility 250 (1s)',cat: 'VOLATILITY' },
+  // ── BOOM ──
+  { id: 'BOOM300N',  sym: 'BM300',   name: 'Boom 300',           cat: 'BOOM/CRASH' },
+  { id: 'BOOM500',   sym: 'BM500',   name: 'Boom 500',           cat: 'BOOM/CRASH' },
+  { id: 'BOOM1000',  sym: 'BM1000',  name: 'Boom 1000',          cat: 'BOOM/CRASH' },
+  // ── CRASH ──
+  { id: 'CRASH300N', sym: 'CR300',   name: 'Crash 300',          cat: 'BOOM/CRASH' },
+  { id: 'CRASH500',  sym: 'CR500',   name: 'Crash 500',          cat: 'BOOM/CRASH' },
+  { id: 'CRASH1000', sym: 'CR1000',  name: 'Crash 1000',         cat: 'BOOM/CRASH' },
+  // ── STEP INDEX ──
+  { id: 'stpRNG2',   sym: 'STEP100', name: 'Step Index 100',     cat: 'STEP' },
+  { id: 'stpRNG4',   sym: 'STEP200', name: 'Step Index 200',     cat: 'STEP' },
+  // ── JUMP ──
+  { id: 'JD10',      sym: 'JMP10',   name: 'Jump 10',            cat: 'JUMP' },
+  { id: 'JD25',      sym: 'JMP25',   name: 'Jump 25',            cat: 'JUMP' },
+  { id: 'JD50',      sym: 'JMP50',   name: 'Jump 50',            cat: 'JUMP' },
+  { id: 'JD75',      sym: 'JMP75',   name: 'Jump 75',            cat: 'JUMP' },
+  { id: 'JD100',     sym: 'JMP100',  name: 'Jump 100',           cat: 'JUMP' },
+  // ── RANGE BREAK ──
+  { id: 'RDBULL100', sym: 'RB100↑',  name: 'Range Break 100 Bull', cat: 'RANGE' },
+  { id: 'RDBEAR100', sym: 'RB100↓',  name: 'Range Break 100 Bear', cat: 'RANGE' },
+  { id: 'RDBULL200', sym: 'RB200↑',  name: 'Range Break 200 Bull', cat: 'RANGE' },
+  { id: 'RDBEAR200', sym: 'RB200↓',  name: 'Range Break 200 Bear', cat: 'RANGE' },
 ];
 
 const TIMEFRAMES = [
@@ -1263,18 +1279,18 @@ let alertsEnabled = true;
 let lastPrices = {};      // track prices to detect OB touches
 
 async function sendTelegram(msg) {
+  // Use GET method with URL params to avoid CORS issues
   try {
-    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TG_CHAT,
-        text: msg,
-        parse_mode: 'HTML'
-      })
-    });
+    const encoded = encodeURIComponent(msg);
+    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT}&text=${encoded}&parse_mode=HTML`;
+    const res = await fetch(url, { method: 'GET' });
+    const data = await res.json();
+    if (!data.ok) console.error('Telegram error:', data);
+    return data.ok;
   } catch(e) {
-    console.error('Telegram error:', e);
+    // Fallback: open in new tab (always works)
+    console.error('Telegram fetch error:', e);
+    return false;
   }
 }
 
