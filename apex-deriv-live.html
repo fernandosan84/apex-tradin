@@ -598,6 +598,7 @@ body::before {
     </div>
     <div class="h-right">
       <div style="font-size:10px;color:var(--dim)" id="scanTime">—</div>
+      <button class="btn-small" onclick="testTelegram()" title="Enviar mensaje de prueba a Telegram">📲 TEST TG</button>
       <button class="btn-small" onclick="logout()">SALIR</button>
       <button class="btn-scan" id="scanBtn" onclick="runFullScan()">⟳ RESCANEAR</button>
     </div>
@@ -1093,6 +1094,9 @@ function processAnalysis() {
   addChat('apex', `✅ Análisis completo. <strong>${opCount}</strong> activos operables detectados.<br>
     Mejor confluencia: <strong>${analysisResults[0].sym}</strong> (${analysisResults[0].score}%) — ${analysisResults[0].masterTrend}.<br>
     ${analysisResults[0].reasons[0] || ''}. ¿Quieres profundizar en algún activo?`);
+
+  // Trigger alert check immediately after scan
+  setTimeout(checkAlerts, 1000);
 }
 
 // ═══════════════════════════════════════════════
@@ -1246,6 +1250,118 @@ Responde en español, como trader profesional institucional. Máximo 130 palabra
     thinking.innerHTML = `<div class="cm-from">APEX</div>Motor IA temporalmente no disponible. Revisa los datos del scanner.`;
   }
   document.getElementById('chatMsgs').scrollTop = 99999;
+}
+
+// ═══════════════════════════════════════════════
+//  TELEGRAM ALERTS
+// ═══════════════════════════════════════════════
+const TG_TOKEN = '8406863279:AAF1cAgi2vqTPfxnSGSS2uyV_ByUUHey_Ag';
+const TG_CHAT  = '7593418397';
+
+let alertsSent = {};      // track sent alerts to avoid duplicates
+let alertsEnabled = true;
+let lastPrices = {};      // track prices to detect OB touches
+
+async function sendTelegram(msg) {
+  try {
+    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TG_CHAT,
+        text: msg,
+        parse_mode: 'HTML'
+      })
+    });
+  } catch(e) {
+    console.error('Telegram error:', e);
+  }
+}
+
+async function checkAlerts() {
+  if (!alertsEnabled || analysisResults.length === 0) return;
+
+  const now = Date.now();
+
+  for (const a of analysisResults) {
+    const key_op = `operable_${a.id}`;
+    const key_ob = `ob_${a.id}`;
+
+    // ── ALERTA 1: Activo nuevo OPERABLE (score >= 68) ──
+    if (a.operable === 'YES' && !alertsSent[key_op]) {
+      alertsSent[key_op] = now;
+
+      const arrow = a.masterTrend === 'ALCISTA' ? '🟢' : a.masterTrend === 'BAJISTA' ? '🔴' : '🟡';
+      const dir   = a.masterTrend === 'ALCISTA' ? '▲ LONG / COMPRA' : a.masterTrend === 'BAJISTA' ? '▼ SHORT / VENTA' : '↔ RANGO';
+
+      const msg =
+`🚨 <b>APEX — SEÑAL INSTITUCIONAL</b>
+
+${arrow} <b>${a.name} (${a.sym})</b>
+📊 Dirección: <b>${dir}</b>
+⚡ Confluencia: <b>${a.score}%</b>
+💰 Precio: <b>${a.price}</b>
+
+✅ ${a.reasons.slice(0,3).join('\n✅ ')}
+
+🔴 Resistencia: ${a.resH?.toFixed(4)||'—'}
+🟢 Soporte: ${a.supL?.toFixed(4)||'—'}
+
+⏰ ${new Date().toLocaleTimeString('es-ES')}
+— APEX Motor Institucional ICT/SMC`;
+
+      await sendTelegram(msg);
+      addChat('apex', `📲 Alerta enviada a Telegram: <strong>${a.sym}</strong> — ${dir} (${a.score}%)`);
+    }
+
+    // ── ALERTA 2: Precio tocando Order Block ──
+    const price = livePrices[a.id];
+    if (price && a.obH && a.obL && !alertsSent[key_ob]) {
+      const touchingOB = price >= a.obL * 0.9995 && price <= a.obH * 1.0005;
+      if (touchingOB) {
+        alertsSent[key_ob] = now;
+
+        const msg =
+`⚡ <b>APEX — PRECIO EN ORDER BLOCK</b>
+
+🎯 <b>${a.name} (${a.sym})</b>
+💰 Precio actual: <b>${price.toFixed(4)}</b>
+📦 Order Block: <b>${a.obL?.toFixed(4)} — ${a.obH?.toFixed(4)}</b>
+📊 Tendencia: <b>${a.masterTrend}</b>
+⚡ Confluencia: <b>${a.score}%</b>
+
+⚠️ Zona institucional activa — vigilar reacción
+
+⏰ ${new Date().toLocaleTimeString('es-ES')}
+— APEX Motor Institucional ICT/SMC`;
+
+        await sendTelegram(msg);
+        addChat('apex', `📲 Alerta OB enviada: <strong>${a.sym}</strong> tocando Order Block en ${price.toFixed(4)}`);
+      }
+    }
+
+    // Reset alert after 2 hours so it can fire again if conditions repeat
+    if (alertsSent[key_op] && now - alertsSent[key_op] > 7200000) delete alertsSent[key_op];
+    if (alertsSent[key_ob] && now - alertsSent[key_ob] > 7200000) delete alertsSent[key_ob];
+  }
+}
+
+// Run alert check every 30 seconds
+setInterval(checkAlerts, 30000);
+
+async function testTelegram() {
+  await sendTelegram(
+`✅ <b>APEX conectado correctamente</b>
+
+🤖 Motor Institucional ICT/SMC activo
+📡 Datos en tiempo real de Deriv
+🔔 Recibirás alertas cuando:
+  • Nuevo activo OPERABLE detectado
+  • Precio tocando Order Block
+
+⏰ ${new Date().toLocaleTimeString('es-ES')}`
+  );
+  addChat('apex', '📲 Mensaje de prueba enviado a Telegram. ¡Revisa tu canal!');
 }
 
 // ═══════════════════════════════════════════════
