@@ -1263,18 +1263,18 @@ let alertsEnabled = true;
 let lastPrices = {};      // track prices to detect OB touches
 
 async function sendTelegram(msg) {
+  // Use GET method with URL params to avoid CORS issues
   try {
-    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TG_CHAT,
-        text: msg,
-        parse_mode: 'HTML'
-      })
-    });
+    const encoded = encodeURIComponent(msg);
+    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT}&text=${encoded}&parse_mode=HTML`;
+    const res = await fetch(url, { method: 'GET' });
+    const data = await res.json();
+    if (!data.ok) console.error('Telegram error:', data);
+    return data.ok;
   } catch(e) {
-    console.error('Telegram error:', e);
+    // Fallback: open in new tab (always works)
+    console.error('Telegram fetch error:', e);
+    return false;
   }
 }
 
