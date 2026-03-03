@@ -27,17 +27,13 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html, body { height: 100%; }
-
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Space Mono', monospace;
   overflow-x: hidden;
 }
-
-/* Animated background */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -50,291 +46,101 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 
-/* ── LOGIN SCREEN ── */
+/* LOGIN */
 #loginScreen {
-  position: fixed; inset: 0;
-  z-index: 200;
+  position: fixed; inset: 0; z-index: 200;
   display: flex; align-items: center; justify-content: center;
   background: var(--bg);
 }
-
 .login-box {
-  width: 460px;
-  border: 1px solid var(--border2);
-  background: var(--panel);
-  padding: 48px;
-  position: relative;
-  overflow: hidden;
+  width: 460px; border: 1px solid var(--border2);
+  background: var(--panel); padding: 48px;
+  position: relative; overflow: hidden;
 }
-
 .login-box::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
-
 .login-logo {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 36px;
-  letter-spacing: 6px;
-  color: var(--accent);
-  text-shadow: 0 0 40px rgba(0,200,255,0.4);
-  margin-bottom: 6px;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 36px;
+  letter-spacing: 6px; color: var(--accent);
+  text-shadow: 0 0 40px rgba(0,200,255,0.4); margin-bottom: 6px;
 }
-
-.login-sub {
-  font-size: 9px;
-  letter-spacing: 5px;
-  color: var(--dim);
-  text-transform: uppercase;
-  margin-bottom: 40px;
-}
-
+.login-sub { font-size: 9px; letter-spacing: 5px; color: var(--dim); text-transform: uppercase; margin-bottom: 40px; }
 .login-field { margin-bottom: 20px; }
-
-.login-label {
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: var(--dim);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  display: block;
-}
-
+.login-label { font-size: 9px; letter-spacing: 3px; color: var(--dim); text-transform: uppercase; margin-bottom: 8px; display: block; }
 .login-input {
-  width: 100%;
-  background: rgba(0,200,255,0.04);
-  border: 1px solid var(--border2);
-  padding: 14px 16px;
-  color: var(--white);
-  font-family: 'Space Mono', monospace;
-  font-size: 13px;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  letter-spacing: 1px;
+  width: 100%; background: rgba(0,200,255,0.04); border: 1px solid var(--border2);
+  padding: 14px 16px; color: var(--white); font-family: 'Space Mono', monospace;
+  font-size: 13px; outline: none; transition: border-color 0.3s, box-shadow 0.3s; letter-spacing: 1px;
 }
-
-.login-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(0,200,255,0.1);
-}
-
+.login-input:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(0,200,255,0.1); }
 .login-input::placeholder { color: var(--dim); font-size: 11px; }
-
 .login-btn {
-  width: 100%;
-  background: var(--accent);
-  border: none;
-  color: var(--bg);
-  padding: 16px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 13px;
-  letter-spacing: 4px;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  margin-top: 8px;
+  width: 100%; background: var(--accent); border: none; color: var(--bg); padding: 16px;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 4px;
+  cursor: pointer; transition: all 0.3s; text-transform: uppercase; margin-top: 8px;
 }
-
-.login-btn:hover {
-  background: var(--green);
-  box-shadow: 0 0 30px rgba(0,232,122,0.3);
-}
-
+.login-btn:hover { background: var(--green); box-shadow: 0 0 30px rgba(0,232,122,0.3); }
 .login-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.login-note {
-  font-size: 10px;
-  color: var(--dim);
-  line-height: 1.8;
-  margin-top: 24px;
-  border-top: 1px solid var(--border);
-  padding-top: 20px;
-}
-
+.login-note { font-size: 10px; color: var(--dim); line-height: 1.8; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 20px; }
 .login-note a { color: var(--accent); text-decoration: none; }
+.login-error { font-size: 11px; color: var(--red); margin-top: 12px; display: none; }
 
-.login-error {
-  font-size: 11px;
-  color: var(--red);
-  margin-top: 12px;
-  display: none;
-}
-
-/* ── MAIN APP ── */
+/* APP */
 #app { display: none; position: relative; z-index: 1; }
 
-/* Header */
 .header {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(7,12,24,0.95);
-  position: sticky; top: 0; z-index: 50;
+  padding: 16px 24px; border-bottom: 1px solid var(--border);
+  background: rgba(7,12,24,0.95); position: sticky; top: 0; z-index: 50;
   backdrop-filter: blur(10px);
 }
-
-.h-logo {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: 5px;
-  color: var(--accent);
-}
-
-.h-logo span {
-  font-weight: 400;
-  font-size: 9px;
-  color: var(--dim);
-  letter-spacing: 4px;
-  display: block;
-  margin-top: -2px;
-}
-
+.h-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 5px; color: var(--accent); }
+.h-logo span { font-weight: 400; font-size: 9px; color: var(--dim); letter-spacing: 4px; display: block; margin-top: -2px; }
 .h-center { display: flex; gap: 24px; align-items: center; }
-
-.live-indicator {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 10px; letter-spacing: 2px; color: var(--green);
-}
-
-.live-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--green); box-shadow: 0 0 8px var(--green);
-  animation: blink 1.5s infinite;
-}
-
+.live-indicator { display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 2px; color: var(--green); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 1.5s infinite; }
 @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-
-.ws-status {
-  font-size: 10px; letter-spacing: 1px;
-  padding: 4px 10px;
-  border-radius: 2px;
-}
-
+.ws-status { font-size: 10px; letter-spacing: 1px; padding: 4px 10px; border-radius: 2px; }
 .ws-ok   { background: rgba(0,232,122,0.1); color: var(--green); border: 1px solid rgba(0,232,122,0.3); }
-.ws-err  { background: rgba(255,45,85,0.1);  color: var(--red);   border: 1px solid rgba(255,45,85,0.3); }
-.ws-wait { background: rgba(255,195,0,0.1);  color: var(--yellow);border: 1px solid rgba(255,195,0,0.3); }
-
+.ws-err  { background: rgba(255,45,85,0.1); color: var(--red);   border: 1px solid rgba(255,45,85,0.3); }
+.ws-wait { background: rgba(255,195,0,0.1); color: var(--yellow);border: 1px solid rgba(255,195,0,0.3); }
 .h-right { display: flex; gap: 12px; align-items: center; }
-
-.btn-small {
-  background: transparent;
-  border: 1px solid var(--border2);
-  color: var(--text2);
-  padding: 7px 14px;
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 2px;
-  cursor: pointer; transition: all 0.25s;
-}
-
+.btn-small { background: transparent; border: 1px solid var(--border2); color: var(--text2); padding: 7px 14px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; cursor: pointer; transition: all 0.25s; }
 .btn-small:hover { border-color: var(--accent); color: var(--accent); }
-
-.btn-scan {
-  background: var(--accent);
-  border: none; color: var(--bg);
-  padding: 8px 18px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 11px; letter-spacing: 3px;
-  cursor: pointer; transition: all 0.3s;
-}
-
+.btn-scan { background: var(--accent); border: none; color: var(--bg); padding: 8px 18px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 3px; cursor: pointer; transition: all 0.3s; }
 .btn-scan:hover { background: var(--green); box-shadow: 0 0 20px rgba(0,232,122,0.3); }
 .btn-scan:disabled { opacity: 0.3; cursor: not-allowed; }
 
-/* Layout */
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  grid-template-rows: auto 1fr;
-  gap: 0;
-  height: calc(100vh - 57px);
-}
+.layout { display: grid; grid-template-columns: 1fr 360px; grid-template-rows: auto 1fr; gap: 0; height: calc(100vh - 57px); }
 
-/* Scanner panel */
-.scanner-panel {
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  grid-row: 1 / 3;
-}
-
+.scanner-panel { border-right: 1px solid var(--border); overflow-y: auto; grid-row: 1 / 3; }
 .scanner-panel::-webkit-scrollbar { width: 4px; }
 .scanner-panel::-webkit-scrollbar-track { background: transparent; }
 .scanner-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-.section-header {
-  position: sticky; top: 0;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 20px;
-  display: flex; justify-content: space-between; align-items: center;
-  z-index: 10;
-}
-
-.section-title {
-  font-size: 9px; letter-spacing: 4px; color: var(--dim); text-transform: uppercase;
-}
-
+.section-header { position: sticky; top: 0; background: var(--panel); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+.section-title { font-size: 9px; letter-spacing: 4px; color: var(--dim); text-transform: uppercase; }
 .section-count { font-size: 11px; color: var(--accent); }
 
-/* Column headers */
-.col-head {
-  display: grid;
-  grid-template-columns: 130px 85px 90px 1fr 80px;
-  gap: 8px;
-  padding: 8px 20px;
-  font-size: 8px; letter-spacing: 2px; color: var(--dim);
-  border-bottom: 1px solid var(--border);
-  background: rgba(7,12,24,0.8);
-  position: sticky; top: 41px; z-index: 9;
-}
+.col-head { display: grid; grid-template-columns: 130px 85px 90px 1fr 80px; gap: 8px; padding: 8px 20px; font-size: 8px; letter-spacing: 2px; color: var(--dim); border-bottom: 1px solid var(--border); background: rgba(7,12,24,0.8); position: sticky; top: 41px; z-index: 9; }
 
-/* Asset rows */
-.asset-row {
-  display: grid;
-  grid-template-columns: 130px 85px 90px 1fr 80px;
-  gap: 8px;
-  align-items: center;
-  padding: 13px 20px;
-  border-bottom: 1px solid rgba(14,28,53,0.5);
-  cursor: pointer;
-  transition: background 0.2s;
-  position: relative;
-}
-
-.asset-row::before {
-  content: '';
-  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-}
-
+.asset-row { display: grid; grid-template-columns: 130px 85px 90px 1fr 80px; gap: 8px; align-items: center; padding: 13px 20px; border-bottom: 1px solid rgba(14,28,53,0.5); cursor: pointer; transition: background 0.2s; position: relative; }
+.asset-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; }
 .asset-row.bull::before { background: var(--green); }
 .asset-row.bear::before { background: var(--red); }
 .asset-row.rang::before { background: var(--yellow); }
-
 .asset-row:hover { background: rgba(0,200,255,0.025); }
 .asset-row.active { background: rgba(0,200,255,0.05); border-color: rgba(0,200,255,0.2); }
 
-.a-name {
-  font-family: 'Syne', sans-serif;
-  font-weight: 700; font-size: 12px; color: var(--white);
-}
+.a-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; color: var(--white); }
 .a-cat { font-size: 9px; color: var(--dim); letter-spacing: 1px; margin-top: 1px; }
-
 .a-price { font-size: 12px; font-weight: 700; }
 .a-price.live { animation: priceFlash 0.4s ease; }
-
 @keyframes priceFlash { 0%{opacity:0.3} 100%{opacity:1} }
 
-.trend-pill {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 3px 7px;
-  font-size: 9px; font-weight: 700; letter-spacing: 1px;
-  border-radius: 2px;
-}
-
+.trend-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 7px; font-size: 9px; font-weight: 700; letter-spacing: 1px; border-radius: 2px; }
 .tp-bull { background: rgba(0,232,122,0.12); color: var(--green); border: 1px solid rgba(0,232,122,0.25); }
 .tp-bear { background: rgba(255,45,85,0.12);  color: var(--red);   border: 1px solid rgba(255,45,85,0.25); }
 .tp-rang { background: rgba(255,195,0,0.12);  color: var(--yellow);border: 1px solid rgba(255,195,0,0.25); }
@@ -344,208 +150,67 @@ body::before {
 .s-fill { height: 100%; border-radius: 2px; transition: width 0.8s ease; }
 .s-num { font-size: 11px; font-weight: 700; min-width: 30px; text-align: right; }
 
-.op-tag {
-  font-size: 8px; font-weight: 700; letter-spacing: 1px;
-  padding: 3px 6px; text-align: center;
-}
+.op-tag { font-size: 8px; font-weight: 700; letter-spacing: 1px; padding: 3px 6px; text-align: center; }
 .op-yes   { background: rgba(0,232,122,0.1); color: var(--green); border: 1px solid rgba(0,232,122,0.4); }
 .op-watch { background: rgba(255,122,0,0.1); color: var(--orange);border: 1px solid rgba(255,122,0,0.4); }
 .op-no    { background: rgba(255,45,85,0.1); color: var(--red);   border: 1px solid rgba(255,45,85,0.3); }
 
-/* Right side panels */
-.right-top {
-  border-bottom: 1px solid var(--border);
-  overflow-y: auto;
-  padding: 20px;
-}
-
+.right-top { border-bottom: 1px solid var(--border); overflow-y: auto; padding: 20px; }
 .right-top::-webkit-scrollbar { width: 3px; }
 .right-top::-webkit-scrollbar-thumb { background: var(--border2); }
+.right-bottom { display: flex; flex-direction: column; border-top: 0; overflow: hidden; }
 
-.right-bottom {
-  display: flex; flex-direction: column;
-  border-top: 0;
-  overflow: hidden;
-}
-
-/* Recommendation card */
-.rec-card {
-  background: linear-gradient(135deg, rgba(0,200,255,0.06), rgba(155,89,255,0.04));
-  border: 1px solid rgba(0,200,255,0.25);
-  padding: 20px;
-  margin-bottom: 16px;
-  position: relative;
-  overflow: hidden;
-}
-
-.rec-card::after {
-  content: '';
-  position: absolute; top: -30px; right: -30px;
-  width: 120px; height: 120px;
-  background: radial-gradient(circle, rgba(0,200,255,0.08), transparent 70%);
-}
-
+.rec-card { background: linear-gradient(135deg, rgba(0,200,255,0.06), rgba(155,89,255,0.04)); border: 1px solid rgba(0,200,255,0.25); padding: 20px; margin-bottom: 16px; position: relative; overflow: hidden; }
+.rec-card::after { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(0,200,255,0.08), transparent 70%); }
 .rec-label { font-size: 8px; letter-spacing: 4px; color: var(--accent); margin-bottom: 8px; }
 .rec-name  { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 3px; }
 .rec-dir   { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
-
 .conf-row { margin-bottom: 14px; }
 .conf-lbl { font-size: 9px; letter-spacing: 2px; color: var(--dim); margin-bottom: 5px; }
 .conf-track { height: 4px; background: var(--border2); border-radius: 2px; overflow: hidden; }
-.conf-bar {
-  height: 100%; border-radius: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--green));
-  box-shadow: 0 0 8px rgba(0,200,255,0.4);
-  transition: width 1.2s ease;
-}
+.conf-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--green)); box-shadow: 0 0 8px rgba(0,200,255,0.4); transition: width 1.2s ease; }
 .conf-pct { font-size: 12px; color: var(--accent); margin-top: 4px; font-weight: 700; }
-
 .rec-bullets { font-size: 10px; color: var(--text); line-height: 1.9; }
 .rec-bullets strong { color: var(--accent); }
 
-/* MTF Grid */
-.mtf-title {
-  font-size: 9px; letter-spacing: 4px; color: var(--dim);
-  margin-bottom: 12px; display: flex; justify-content: space-between;
-}
-
-.tf-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  margin-bottom: 16px;
-}
-
-.tf-cell {
-  padding: 8px 6px;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  text-align: center;
-  transition: border-color 0.3s;
-}
-
+.mtf-title { font-size: 9px; letter-spacing: 4px; color: var(--dim); margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 16px; }
+.tf-cell { padding: 8px 6px; background: var(--panel2); border: 1px solid var(--border); text-align: center; transition: border-color 0.3s; }
 .tf-cell.aligned { border-color: rgba(0,232,122,0.3); }
 .tf-cell.counter  { border-color: rgba(255,45,85,0.2); }
-
 .tf-label { font-size: 8px; color: var(--dim); letter-spacing: 2px; margin-bottom: 5px; }
 .tf-t { font-size: 10px; font-weight: 700; }
 .tf-s { font-size: 8px; color: var(--dim); margin-top: 2px; }
-
 .bull-c { color: var(--green); }
 .bear-c { color: var(--red); }
 .rang-c { color: var(--yellow); }
 
-/* Levels */
 .levels-list { display: flex; flex-direction: column; gap: 3px; }
-.lv-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 7px 10px;
-  background: var(--panel2);
-  font-size: 10px;
-}
+.lv-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; background: var(--panel2); font-size: 10px; }
 .lv-type { font-size: 9px; color: var(--dim); letter-spacing: 1px; }
 
-/* Chat */
-.chat-wrap {
-  display: flex; flex-direction: column;
-  border-top: 1px solid var(--border);
-  height: 100%;
-}
-
-.chat-header {
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--border);
-  font-size: 9px; letter-spacing: 4px; color: var(--dim);
-  background: var(--panel);
-  flex-shrink: 0;
-}
-
-.chat-msgs {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-
+.chat-wrap { display: flex; flex-direction: column; border-top: 1px solid var(--border); height: 100%; }
+.chat-header { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 9px; letter-spacing: 4px; color: var(--dim); background: var(--panel); flex-shrink: 0; }
+.chat-msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .chat-msgs::-webkit-scrollbar { width: 3px; }
 .chat-msgs::-webkit-scrollbar-thumb { background: var(--border2); }
-
-.cm {
-  padding: 9px 12px;
-  font-size: 11px; line-height: 1.7;
-  max-width: 90%;
-}
-
-.cm.apex {
-  background: rgba(0,200,255,0.05);
-  border-left: 2px solid var(--accent);
-  align-self: flex-start;
-}
-
-.cm.user {
-  background: rgba(255,255,255,0.04);
-  border-right: 2px solid var(--dim);
-  align-self: flex-end;
-  color: var(--text2);
-}
-
+.cm { padding: 9px 12px; font-size: 11px; line-height: 1.7; max-width: 90%; }
+.cm.apex { background: rgba(0,200,255,0.05); border-left: 2px solid var(--accent); align-self: flex-start; }
+.cm.user { background: rgba(255,255,255,0.04); border-right: 2px solid var(--dim); align-self: flex-end; color: var(--text2); }
 .cm-from { font-size: 8px; letter-spacing: 2px; color: var(--dim); margin-bottom: 3px; }
-
-.chat-foot {
-  padding: 10px;
-  border-top: 1px solid var(--border);
-  display: flex; gap: 8px;
-  flex-shrink: 0;
-}
-
-.chat-inp {
-  flex: 1;
-  background: var(--panel2);
-  border: 1px solid var(--border2);
-  padding: 9px 12px;
-  color: var(--text);
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  outline: none;
-  transition: border-color 0.3s;
-}
-
+.chat-foot { padding: 10px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-shrink: 0; }
+.chat-inp { flex: 1; background: var(--panel2); border: 1px solid var(--border2); padding: 9px 12px; color: var(--text); font-family: 'Space Mono', monospace; font-size: 11px; outline: none; transition: border-color 0.3s; }
 .chat-inp:focus { border-color: var(--accent); }
 .chat-inp::placeholder { color: var(--dim); font-size: 10px; }
-
-.chat-send {
-  background: var(--accent);
-  border: none; color: var(--bg);
-  padding: 9px 14px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 10px; letter-spacing: 2px;
-  cursor: pointer; transition: all 0.25s;
-}
-
+.chat-send { background: var(--accent); border: none; color: var(--bg); padding: 9px 14px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px; cursor: pointer; transition: all 0.25s; }
 .chat-send:hover { background: var(--green); }
 
-/* Loading scanner */
-.scan-loading {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 16px;
-  padding: 60px 20px;
-}
-
-.spin-ring {
-  width: 50px; height: 50px;
-  border: 2px solid var(--border2);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-}
-
+.scan-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 60px 20px; }
+.spin-ring { width: 50px; height: 50px; border: 2px solid var(--border2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
 .scan-msg { font-size: 11px; color: var(--dim); letter-spacing: 2px; text-align: center; }
 .scan-msg em { color: var(--accent); font-style: normal; }
 
-/* Responsive */
 @media (max-width: 960px) {
   .layout { grid-template-columns: 1fr; grid-template-rows: auto auto; height: auto; }
   .scanner-panel { border-right: none; border-bottom: 1px solid var(--border); max-height: 60vh; }
@@ -555,25 +220,19 @@ body::before {
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
     <div class="login-logo">APEX</div>
     <div class="login-sub">Asistente Institucional · Deriv Synthetics</div>
-
     <div class="login-field">
       <label class="login-label">Tu API Token de Deriv</label>
       <input class="login-input" id="tokenInput" type="password"
         placeholder="Pega aquí tu API token (ej: a1B2c3D4e5F6...)"
         onkeydown="if(event.key==='Enter')connect()">
     </div>
-
-    <button class="login-btn" id="connectBtn" onclick="connect()">
-      CONECTAR Y ESCANEAR
-    </button>
-
+    <button class="login-btn" id="connectBtn" onclick="connect()">CONECTAR Y ESCANEAR</button>
     <div class="login-error" id="loginError"></div>
-
     <div class="login-note">
       🔐 Tu token <strong>solo se usa</strong> para conectar al WebSocket de Deriv.<br>
       Nunca abandona tu navegador. No se envía a ningún servidor externo.<br><br>
@@ -583,17 +242,14 @@ body::before {
   </div>
 </div>
 
-<!-- ══ APP ══ -->
+<!-- APP -->
 <div id="app">
   <div class="header">
     <div>
       <div class="h-logo">APEX <span>MOTOR INSTITUCIONAL ICT/SMC</span></div>
     </div>
     <div class="h-center">
-      <div class="live-indicator">
-        <div class="live-dot"></div>
-        <span>LIVE</span>
-      </div>
+      <div class="live-indicator"><div class="live-dot"></div><span>LIVE</span></div>
       <div class="ws-status ws-ok" id="wsStatus">DERIV CONECTADO</div>
     </div>
     <div class="h-right">
@@ -605,18 +261,13 @@ body::before {
   </div>
 
   <div class="layout">
-    <!-- Scanner -->
     <div class="scanner-panel">
       <div class="section-header">
         <span class="section-title">SCANNER · SINTÉTICOS DERIV</span>
         <span class="section-count" id="opCount">—</span>
       </div>
       <div class="col-head">
-        <span>ACTIVO</span>
-        <span>PRECIO LIVE</span>
-        <span>TENDENCIA</span>
-        <span>CONFLUENCIA</span>
-        <span>ESTADO</span>
+        <span>ACTIVO</span><span>PRECIO LIVE</span><span>TENDENCIA</span><span>CONFLUENCIA</span><span>ESTADO</span>
       </div>
       <div id="scannerRows">
         <div class="scan-loading">
@@ -626,7 +277,6 @@ body::before {
       </div>
     </div>
 
-    <!-- Right Top: Recommendation + MTF -->
     <div class="right-top" id="rightTop">
       <div class="rec-card">
         <div class="rec-label">▸ RECOMENDACIÓN DEL DÍA</div>
@@ -639,22 +289,16 @@ body::before {
         </div>
         <div class="rec-bullets" id="recBullets">El motor está ejecutando el análisis multi-timeframe...</div>
       </div>
-
       <div style="margin-bottom:16px">
-        <div class="mtf-title">
-          <span>ANÁLISIS MULTI-TIMEFRAME</span>
-          <span id="mtfAsset" style="color:var(--white)">—</span>
-        </div>
+        <div class="mtf-title"><span>ANÁLISIS MULTI-TIMEFRAME</span><span id="mtfAsset" style="color:var(--white)">—</span></div>
         <div class="tf-grid" id="tfGrid"></div>
       </div>
-
       <div>
         <div class="mtf-title"><span>NIVELES INSTITUCIONALES</span></div>
         <div class="levels-list" id="levelsList"></div>
       </div>
     </div>
 
-    <!-- Right Bottom: Chat -->
     <div class="right-bottom">
       <div class="chat-wrap">
         <div class="chat-header">CONSULTOR APEX · ICT / SMC</div>
@@ -675,19 +319,17 @@ body::before {
 </div>
 
 <script>
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  CONFIG
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 const DERIV_WS_URL = 'wss://ws.binaryws.com/websockets/v3?app_id=1089';
 
 const SYNTHETICS = [
-  // ── VOLATILITY (tick) ──
   { id: 'R_10',     sym: 'V10',      name: 'Volatility 10',      cat: 'VOLATILITY' },
   { id: 'R_25',     sym: 'V25',      name: 'Volatility 25',      cat: 'VOLATILITY' },
   { id: 'R_50',     sym: 'V50',      name: 'Volatility 50',      cat: 'VOLATILITY' },
   { id: 'R_75',     sym: 'V75',      name: 'Volatility 75',      cat: 'VOLATILITY' },
   { id: 'R_100',    sym: 'V100',     name: 'Volatility 100',     cat: 'VOLATILITY' },
-  // ── VOLATILITY (1s) ──
   { id: '1HZ10V',   sym: 'V10(1s)',  name: 'Volatility 10 (1s)', cat: 'VOLATILITY' },
   { id: '1HZ25V',   sym: 'V25(1s)',  name: 'Volatility 25 (1s)', cat: 'VOLATILITY' },
   { id: '1HZ50V',   sym: 'V50(1s)',  name: 'Volatility 50 (1s)', cat: 'VOLATILITY' },
@@ -695,83 +337,56 @@ const SYNTHETICS = [
   { id: '1HZ100V',  sym: 'V100(1s)', name: 'Volatility 100 (1s)',cat: 'VOLATILITY' },
   { id: '1HZ150V',  sym: 'V150(1s)', name: 'Volatility 150 (1s)',cat: 'VOLATILITY' },
   { id: '1HZ250V',  sym: 'V250(1s)', name: 'Volatility 250 (1s)',cat: 'VOLATILITY' },
-  // ── BOOM ──
   { id: 'BOOM300N',  sym: 'BM300',   name: 'Boom 300',           cat: 'BOOM/CRASH' },
   { id: 'BOOM500',   sym: 'BM500',   name: 'Boom 500',           cat: 'BOOM/CRASH' },
   { id: 'BOOM1000',  sym: 'BM1000',  name: 'Boom 1000',          cat: 'BOOM/CRASH' },
-  // ── CRASH ──
   { id: 'CRASH300N', sym: 'CR300',   name: 'Crash 300',          cat: 'BOOM/CRASH' },
   { id: 'CRASH500',  sym: 'CR500',   name: 'Crash 500',          cat: 'BOOM/CRASH' },
   { id: 'CRASH1000', sym: 'CR1000',  name: 'Crash 1000',         cat: 'BOOM/CRASH' },
-  // ── STEP INDEX ──
   { id: 'stpRNG2',   sym: 'STEP100', name: 'Step Index 100',     cat: 'STEP' },
   { id: 'stpRNG4',   sym: 'STEP200', name: 'Step Index 200',     cat: 'STEP' },
-  // ── JUMP ──
   { id: 'JD10',      sym: 'JMP10',   name: 'Jump 10',            cat: 'JUMP' },
   { id: 'JD25',      sym: 'JMP25',   name: 'Jump 25',            cat: 'JUMP' },
   { id: 'JD50',      sym: 'JMP50',   name: 'Jump 50',            cat: 'JUMP' },
   { id: 'JD75',      sym: 'JMP75',   name: 'Jump 75',            cat: 'JUMP' },
   { id: 'JD100',     sym: 'JMP100',  name: 'Jump 100',           cat: 'JUMP' },
-  // ── RANGE BREAK ──
   { id: 'RDBULL100', sym: 'RB100↑',  name: 'Range Break 100 Bull', cat: 'RANGE' },
   { id: 'RDBEAR100', sym: 'RB100↓',  name: 'Range Break 100 Bear', cat: 'RANGE' },
   { id: 'RDBULL200', sym: 'RB200↑',  name: 'Range Break 200 Bull', cat: 'RANGE' },
   { id: 'RDBEAR200', sym: 'RB200↓',  name: 'Range Break 200 Bear', cat: 'RANGE' },
 ];
 
-const TIMEFRAMES = [
-  { label: '1MES', seconds: 2592000 },
-  { label: '1SEM', seconds: 604800  },
-  { label: '1DÍA', seconds: 86400   },
-  { label: '4H',   seconds: 14400   },
-  { label: '1H',   seconds: 3600    },
-  { label: '15m',  seconds: 900     },
-  { label: '5m',   seconds: 300     },
-  { label: '1m',   seconds: 60      },
-];
+const CANDLE_TIMEOUT_MS = 8000; // ✅ FIX: 8s timeout per candle request
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  STATE
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 let ws = null;
 let apiToken = '';
 let livePrices = {};
 let analysisResults = [];
 let selectedIdx = 0;
-let pendingTicks = {};
 let pendingCandles = {};
-let candleData = {};   // candleData[symbol][tf_seconds] = [candles]
+let candleData = {};
 let scanInProgress = false;
 let tickSubs = {};
+let scanExpected = 0;
+let scanReceived = 0;
+let scanTimeoutId = null; // ✅ FIX: global scan timeout
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  CONNECTION
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function connect() {
   const token = document.getElementById('tokenInput').value.trim();
   if (!token) { showError('Ingresa tu API token de Deriv.'); return; }
   apiToken = token;
   setConnectState(true);
-
   ws = new WebSocket(DERIV_WS_URL);
-
-  ws.onopen = () => {
-    ws.send(JSON.stringify({ authorize: apiToken }));
-  };
-
-  ws.onmessage = (e) => {
-    const msg = JSON.parse(e.data);
-    handleMessage(msg);
-  };
-
-  ws.onerror = () => {
-    showError('Error de conexión. Verifica tu token y conexión a internet.');
-    setConnectState(false);
-  };
-
-  ws.onclose = () => {
-    setWsStatus('DESCONECTADO', 'ws-err');
-  };
+  ws.onopen = () => { ws.send(JSON.stringify({ authorize: apiToken })); };
+  ws.onmessage = (e) => { handleMessage(JSON.parse(e.data)); };
+  ws.onerror = () => { showError('Error de conexión. Verifica tu token y conexión a internet.'); setConnectState(false); };
+  ws.onclose = () => { setWsStatus('DESCONECTADO', 'ws-err'); };
 }
 
 function handleMessage(msg) {
@@ -781,11 +396,19 @@ function handleMessage(msg) {
       setConnectState(false);
       ws.close();
     }
+    // ✅ FIX: If a candle request errors, count it as received so scan doesn't freeze
+    if (msg.req_id && pendingCandles[msg.req_id]) {
+      const { symbol, tf } = pendingCandles[msg.req_id];
+      if (!candleData[symbol]) candleData[symbol] = {};
+      candleData[symbol][tf] = []; // empty = no data
+      clearTimeout(pendingCandles[msg.req_id].timer);
+      delete pendingCandles[msg.req_id];
+      checkScanComplete();
+    }
     return;
   }
 
   if (msg.msg_type === 'authorize') {
-    // Authorized!
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     setWsStatus('DERIV CONECTADO', 'ws-ok');
@@ -796,7 +419,6 @@ function handleMessage(msg) {
   if (msg.msg_type === 'tick') {
     const t = msg.tick;
     livePrices[t.symbol] = t.quote;
-    // Update price in table
     const priceEl = document.getElementById('price-' + t.symbol);
     if (priceEl) {
       priceEl.textContent = formatPrice(t.symbol, t.quote);
@@ -812,7 +434,8 @@ function handleMessage(msg) {
     if (pendingCandles[reqId]) {
       const { symbol, tf } = pendingCandles[reqId];
       if (!candleData[symbol]) candleData[symbol] = {};
-      candleData[symbol][tf] = msg.candles;
+      candleData[symbol][tf] = msg.candles || [];
+      clearTimeout(pendingCandles[reqId].timer); // ✅ FIX: clear per-request timeout
       delete pendingCandles[reqId];
       checkScanComplete();
     }
@@ -820,12 +443,9 @@ function handleMessage(msg) {
   }
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  SCANNER
-// ═══════════════════════════════════════════════
-let scanExpected = 0;
-let scanReceived = 0;
-
+// ═══════════════════════════════════════
 function runFullScan() {
   if (scanInProgress) return;
   scanInProgress = true;
@@ -833,28 +453,27 @@ function runFullScan() {
   scanExpected = 0;
   scanReceived = 0;
 
+  // ✅ FIX: Clear any previous global timeout
+  if (scanTimeoutId) { clearTimeout(scanTimeoutId); scanTimeoutId = null; }
+
   document.getElementById('scanBtn').disabled = true;
   document.getElementById('scannerRows').innerHTML = `
     <div class="scan-loading">
       <div class="spin-ring"></div>
-      <div class="scan-msg" id="scanMsg">Solicitando datos de mercado...<br><em>0 / ${SYNTHETICS.length * TIMEFRAMES.length} timeframes</em></div>
+      <div class="scan-msg" id="scanMsg">Solicitando datos de mercado...<br><em>0 / ${SYNTHETICS.length * 3} timeframes</em></div>
     </div>`;
 
-  // Unsubscribe old ticks
   Object.keys(tickSubs).forEach(s => {
-    ws.send(JSON.stringify({ forget: tickSubs[s] }));
+    try { ws.send(JSON.stringify({ forget: tickSubs[s] })); } catch(e){}
   });
   tickSubs = {};
 
-  // Subscribe to live ticks with small delay
   SYNTHETICS.forEach((asset, i) => {
     setTimeout(() => {
-      ws.send(JSON.stringify({ ticks: asset.id, subscribe: 1 }));
+      try { ws.send(JSON.stringify({ ticks: asset.id, subscribe: 1 })); } catch(e){}
     }, i * 50);
   });
 
-  // Request candles with delay to avoid rate limits
-  // Use only 3 TFs to reduce load: 1D, 1H, 5m
   const analysisTFs = [86400, 3600, 300];
   let reqId = 1000;
   let delay = 500;
@@ -863,47 +482,85 @@ function runFullScan() {
     analysisTFs.forEach(tf => {
       scanExpected++;
       const id = reqId++;
-      pendingCandles[id] = { symbol: asset.id, tf };
+
+      // ✅ FIX: Set per-request timeout — if no response in 8s, mark as received
+      const timer = setTimeout(() => {
+        if (pendingCandles[id]) {
+          const { symbol, tf: tframe } = pendingCandles[id];
+          if (!candleData[symbol]) candleData[symbol] = {};
+          if (!candleData[symbol][tframe]) candleData[symbol][tframe] = [];
+          delete pendingCandles[id];
+          checkScanComplete();
+        }
+      }, delay + CANDLE_TIMEOUT_MS);
+
+      pendingCandles[id] = { symbol: asset.id, tf, timer };
+
       setTimeout(() => {
-        ws.send(JSON.stringify({
-          ticks_history: asset.id,
-          adjust_start_time: 1,
-          count: 50,
-          end: 'latest',
-          granularity: tf,
-          style: 'candles',
-          req_id: id
-        }));
+        try {
+          ws.send(JSON.stringify({
+            ticks_history: asset.id,
+            adjust_start_time: 1,
+            count: 50,
+            end: 'latest',
+            granularity: tf,
+            style: 'candles',
+            req_id: id
+          }));
+        } catch(e) {
+          // If send fails, count as received
+          if (pendingCandles[id]) {
+            clearTimeout(pendingCandles[id].timer);
+            delete pendingCandles[id];
+            checkScanComplete();
+          }
+        }
       }, delay);
       delay += 120;
     });
   });
+
+  // ✅ FIX: Global fallback — if after all delays + 15s scan hasn't completed, force finish
+  const totalDelay = delay + 15000;
+  scanTimeoutId = setTimeout(() => {
+    if (scanInProgress) {
+      console.warn('APEX: Scan global timeout — forzando finalización');
+      // Mark all pending as received
+      Object.keys(pendingCandles).forEach(id => {
+        const { symbol, tf } = pendingCandles[id];
+        if (!candleData[symbol]) candleData[symbol] = {};
+        if (!candleData[symbol][tf]) candleData[symbol][tf] = [];
+        clearTimeout(pendingCandles[id].timer);
+        delete pendingCandles[id];
+      });
+      processAnalysis();
+    }
+  }, totalDelay);
 }
 
 function checkScanComplete() {
   scanReceived++;
-  const total = SYNTHETICS.length * 3; // 3 TFs
+  const total = SYNTHETICS.length * 3;
   const pct = Math.round(scanReceived / total * 100);
   const msg = document.getElementById('scanMsg');
   if (msg) msg.innerHTML = `Analizando estructura de mercado...<br><em>${scanReceived} / ${total} timeframes (${pct}%)</em>`;
 
   if (scanReceived >= total) {
+    if (scanTimeoutId) { clearTimeout(scanTimeoutId); scanTimeoutId = null; }
     setTimeout(processAnalysis, 200);
   }
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  ICT/SMC ANALYSIS ENGINE
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function analyzeCandles(candles) {
   if (!candles || candles.length < 10) return null;
-
   const closes = candles.map(c => c.close);
   const highs  = candles.map(c => c.high);
   const lows   = candles.map(c => c.low);
   const n = candles.length;
 
-  // ── Trend via EMA crossover ──
   const ema20 = ema(closes, 20);
   const ema50 = ema(closes, 50);
   const lastClose = closes[n-1];
@@ -915,7 +572,6 @@ function analyzeCandles(candles) {
   else if (lastClose < lastEma20 && lastEma20 < lastEma50) trend = 'BAJISTA';
   else trend = 'RANGO';
 
-  // ── Structure: HH/HL or LH/LL ──
   const swingHighs = findSwingHighs(highs, 3);
   const swingLows  = findSwingLows(lows, 3);
 
@@ -929,50 +585,30 @@ function analyzeCandles(candles) {
     const lastLL = swingLows[swingLows.length-1];
     const prevLL = swingLows[swingLows.length-2];
 
-    if (lastHH > prevHH && lastLL > prevLL) {
-      struct = 'HH/HL';
-      bos = lastClose > prevHH;
-    } else if (lastHH < prevHH && lastLL < prevLL) {
-      struct = 'LH/LL';
-      bos = lastClose < prevLL;
-    } else if (trend === 'ALCISTA' && lastHH < prevHH) {
-      struct = 'ChoCH↓';
-      choch = true;
-    } else if (trend === 'BAJISTA' && lastLL > prevLL) {
-      struct = 'ChoCH↑';
-      choch = true;
-    }
+    if (lastHH > prevHH && lastLL > prevLL) { struct = 'HH/HL'; bos = lastClose > prevHH; }
+    else if (lastHH < prevHH && lastLL < prevLL) { struct = 'LH/LL'; bos = lastClose < prevLL; }
+    else if (trend === 'ALCISTA' && lastHH < prevHH) { struct = 'ChoCH↓'; choch = true; }
+    else if (trend === 'BAJISTA' && lastLL > prevLL) { struct = 'ChoCH↑'; choch = true; }
   }
 
-  // ── Order Block detection ──
   let obHigh = null, obLow = null;
   for (let i = n-10; i < n-2; i++) {
     const c = candles[i];
     const next = candles[i+1];
     const isUp = next.close > c.close * 1.001;
     const isDn = next.close < c.close * 0.999;
-    if (isUp && c.close < next.open) {
-      // Bullish OB: last bearish candle before bullish impulse
-      if (candles[i-1] && candles[i-1].close < candles[i-1].open) {
-        obHigh = candles[i-1].high;
-        obLow  = candles[i-1].low;
-      }
-    } else if (isDn && c.close > next.open) {
-      if (candles[i-1] && candles[i-1].close > candles[i-1].open) {
-        obHigh = candles[i-1].high;
-        obLow  = candles[i-1].low;
-      }
+    if ((isUp || isDn) && candles[i-1]) {
+      if (isUp && candles[i-1].close < candles[i-1].open) { obHigh = candles[i-1].high; obLow = candles[i-1].low; }
+      else if (isDn && candles[i-1].close > candles[i-1].open) { obHigh = candles[i-1].high; obLow = candles[i-1].low; }
     }
   }
 
-  // ── FVG detection ──
   let fvg = false;
   for (let i = 1; i < n-1; i++) {
     const gap = candles[i+1].low - candles[i-1].high;
     if (Math.abs(gap) / candles[i].close > 0.001) { fvg = true; break; }
   }
 
-  // ── Liquidity zones ──
   const recentHigh = Math.max(...highs.slice(-20));
   const recentLow  = Math.min(...lows.slice(-20));
   const bsl = highs.slice(-5).some(h => Math.abs(h - recentHigh) / recentHigh < 0.001);
@@ -1012,6 +648,7 @@ function findSwingLows(lows, lookback) {
 }
 
 function processAnalysis() {
+  scanInProgress = false;
   analysisResults = [];
   const analysisTFs = [86400, 3600, 300];
   const tfLabels = { 86400:'1DÍA', 3600:'1H', 300:'5m' };
@@ -1023,41 +660,34 @@ function processAnalysis() {
       tfResults[tfLabels[tf]] = analyzeCandles(candles);
     });
 
-    // ── Score calculation ──
     let score = 0;
     const reasons = [];
     const validTFs = Object.values(tfResults).filter(Boolean);
 
-    if (validTFs.length === 0) { score = 0; }
-    else {
-      // Trend alignment
+    if (validTFs.length > 0) {
       const trends = validTFs.map(t => t.trend);
       const bullCount = trends.filter(t => t === 'ALCISTA').length;
       const bearCount = trends.filter(t => t === 'BAJISTA').length;
-      const masterTrend = bullCount >= bearCount ? (bullCount > 1 ? 'ALCISTA' : 'RANGO') : 'BAJISTA';
+      const masterTrend = bullCount > bearCount ? 'ALCISTA' : bearCount > bullCount ? 'BAJISTA' : 'RANGO';
       const alignedCount = Math.max(bullCount, bearCount);
 
       score += alignedCount * 8;
-      if (alignedCount >= 4) reasons.push(`${alignedCount}/${validTFs.length} timeframes alineados en ${masterTrend}`);
+      if (alignedCount >= 2) reasons.push(`${alignedCount}/${validTFs.length} timeframes alineados en ${masterTrend}`);
 
-      // BOS/ChoCH
       const bosCount = validTFs.filter(t => t.bos).length;
       const chochCount = validTFs.filter(t => t.choch).length;
       score += bosCount * 6 + chochCount * 4;
       if (bosCount > 0) reasons.push(`${bosCount} rompimientos BOS confirmados`);
       if (chochCount > 0) reasons.push(`ChoCH detectado — posible cambio de tendencia`);
 
-      // OB
       const obCount = validTFs.filter(t => t.obHigh).length;
       score += obCount * 4;
-      if (obCount >= 2) reasons.push(`${obCount} Order Blocks activos en estructura`);
+      if (obCount >= 1) reasons.push(`${obCount} Order Blocks activos en estructura`);
 
-      // FVG
       const fvgCount = validTFs.filter(t => t.fvg).length;
       score += fvgCount * 3;
-      if (fvgCount >= 2) reasons.push(`${fvgCount} Fair Value Gaps (imbalances) identificados`);
+      if (fvgCount >= 1) reasons.push(`${fvgCount} Fair Value Gaps (imbalances) identificados`);
 
-      // Liquidity
       const bslCount = validTFs.filter(t => t.bsl).length;
       const sslCount = validTFs.filter(t => t.ssl).length;
       if (bslCount > 0 || sslCount > 0) {
@@ -1065,7 +695,6 @@ function processAnalysis() {
         reasons.push(`Liquidez ${bslCount > sslCount ? 'BSL' : 'SSL'} visible — objetivo institucional`);
       }
 
-      // Boom/Crash alignment bonus
       const isBoom = asset.cat === 'BOOM/CRASH' && asset.id.includes('BOOM');
       const isCrash = asset.cat === 'BOOM/CRASH' && asset.id.includes('CRASH');
       if (isBoom && masterTrend === 'ALCISTA') { score += 15; reasons.push('Boom Index con sesgo alcista institucional'); }
@@ -1073,20 +702,17 @@ function processAnalysis() {
 
       score = Math.round(Math.min(97, score + (Math.random() * 5)));
 
-      // Price levels
       const last1D = tfResults['1DÍA'];
-      const lastH = last1D?.recentHigh || livePrices[asset.id] * 1.01;
-      const lastL = last1D?.recentLow  || livePrices[asset.id] * 0.99;
       const price = livePrices[asset.id] || 0;
+      const lastH = last1D?.recentHigh || price * 1.01;
+      const lastL = last1D?.recentLow  || price * 0.99;
 
       analysisResults.push({
         ...asset,
         tfResults,
-        masterTrend: validTFs.length > 0
-          ? (bullCount > bearCount ? 'ALCISTA' : bearCount > bullCount ? 'BAJISTA' : 'RANGO')
-          : 'RANGO',
+        masterTrend,
         score,
-        reasons,
+        reasons: reasons.length > 0 ? reasons : ['Sin suficiente confluencia institucional'],
         operable: score >= 68 ? 'YES' : score >= 48 ? 'WATCH' : 'NO',
         price,
         resH: lastH,
@@ -1099,7 +725,6 @@ function processAnalysis() {
   });
 
   analysisResults.sort((a, b) => b.score - a.score);
-  scanInProgress = false;
   document.getElementById('scanBtn').disabled = false;
   document.getElementById('scanTime').textContent = `SCAN: ${new Date().toLocaleTimeString('es-ES')}`;
 
@@ -1107,21 +732,25 @@ function processAnalysis() {
   document.getElementById('opCount').textContent = `${opCount} OPERABLES`;
 
   renderScanner();
-  renderRec(analysisResults[0]);
-  renderDetail(analysisResults[0]);
+  if (analysisResults.length > 0) {
+    renderRec(analysisResults[0]);
+    renderDetail(analysisResults[0]);
+    addChat('apex', `✅ Análisis completo. <strong>${opCount}</strong> activos operables detectados.<br>
+      Mejor confluencia: <strong>${analysisResults[0].sym}</strong> (${analysisResults[0].score}%) — ${analysisResults[0].masterTrend}.<br>
+      ${analysisResults[0].reasons[0] || ''}. ¿Quieres profundizar en algún activo?`);
+  }
 
-  addChat('apex', `✅ Análisis completo. <strong>${opCount}</strong> activos operables detectados.<br>
-    Mejor confluencia: <strong>${analysisResults[0].sym}</strong> (${analysisResults[0].score}%) — ${analysisResults[0].masterTrend}.<br>
-    ${analysisResults[0].reasons[0] || ''}. ¿Quieres profundizar en algún activo?`);
-
-  // Trigger alert check immediately after scan
   setTimeout(checkAlerts, 1000);
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  RENDER
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function renderScanner() {
+  if (analysisResults.length === 0) {
+    document.getElementById('scannerRows').innerHTML = `<div class="scan-loading"><div class="scan-msg">No se obtuvieron datos.<br><em>Intenta rescanear</em></div></div>`;
+    return;
+  }
   const html = analysisResults.map((a, i) => {
     const rowClass = a.masterTrend === 'ALCISTA' ? 'bull' : a.masterTrend === 'BAJISTA' ? 'bear' : 'rang';
     const tpClass  = a.masterTrend === 'ALCISTA' ? 'tp-bull' : a.masterTrend === 'BAJISTA' ? 'tp-bear' : 'tp-rang';
@@ -1129,14 +758,9 @@ function renderScanner() {
     const scoreC   = a.score >= 68 ? '#00e87a' : a.score >= 48 ? '#ffc300' : '#ff2d55';
     const opC      = a.operable === 'YES' ? 'op-yes' : a.operable === 'WATCH' ? 'op-watch' : 'op-no';
     const opT      = a.operable === 'YES' ? 'OPERABLE' : a.operable === 'WATCH' ? 'VIGILAR' : 'NO HOY';
-    const priceStr = formatPrice(a.id, a.price);
-
     return `<div class="asset-row ${rowClass} ${i === selectedIdx ? 'active' : ''}" onclick="selectRow(${i})">
-      <div>
-        <div class="a-name">${a.sym}</div>
-        <div class="a-cat">${a.cat}</div>
-      </div>
-      <div class="a-price" id="price-${a.id}" style="color:${a.masterTrend==='ALCISTA'?'var(--green)':a.masterTrend==='BAJISTA'?'var(--red)':'var(--text)'}">${priceStr}</div>
+      <div><div class="a-name">${a.sym}</div><div class="a-cat">${a.cat}</div></div>
+      <div class="a-price" id="price-${a.id}" style="color:${a.masterTrend==='ALCISTA'?'var(--green)':a.masterTrend==='BAJISTA'?'var(--red)':'var(--text)'}">${formatPrice(a.id, a.price)}</div>
       <div><span class="trend-pill ${tpClass}">${arrow} ${a.masterTrend}</span></div>
       <div class="score-col">
         <div class="s-bar"><div class="s-fill" style="width:${a.score}%;background:${scoreC}"></div></div>
@@ -1157,9 +781,7 @@ function renderRec(a) {
   document.getElementById('recDir').style.color = dirColor;
   document.getElementById('confBar').style.width = a.score + '%';
   document.getElementById('confPct').textContent = a.score + '% Confluencia Institucional';
-
-  const bulls = document.getElementById('recBullets');
-  bulls.innerHTML = a.reasons.map(r => `✓ <strong>${r}</strong>`).join('<br>') +
+  document.getElementById('recBullets').innerHTML = a.reasons.map(r => `✓ <strong>${r}</strong>`).join('<br>') +
     `<br><br>📍 Precio live: <strong>${formatPrice(a.id, a.price)}</strong>` +
     `<br>🔴 Resistencia: <strong>${a.resH?.toFixed(4) || '—'}</strong>` +
     `<br>🟢 Soporte: <strong>${a.supL?.toFixed(4) || '—'}</strong>`;
@@ -1168,9 +790,8 @@ function renderRec(a) {
 function renderDetail(a) {
   if (!a) return;
   document.getElementById('mtfAsset').textContent = a.sym;
-
   const tfLabels = ['1DÍA','1H','5m'];
-  const html = tfLabels.map(tf => {
+  document.getElementById('tfGrid').innerHTML = tfLabels.map(tf => {
     const r = a.tfResults[tf];
     if (!r) return `<div class="tf-cell"><div class="tf-label">${tf}</div><div class="tf-t" style="color:var(--dim)">—</div><div class="tf-s">sin datos</div></div>`;
     const tc = r.trend === 'ALCISTA' ? 'bull-c' : r.trend === 'BAJISTA' ? 'bear-c' : 'rang-c';
@@ -1182,22 +803,17 @@ function renderDetail(a) {
       <div class="tf-s">${r.struct}${r.bos?' · BOS':''}${r.choch?' · ChoCH':''}</div>
     </div>`;
   }).join('');
-  document.getElementById('tfGrid').innerHTML = html;
-
   document.getElementById('levelsList').innerHTML = `
     <div class="lv-row"><span class="lv-type">RESISTENCIA / BSL</span><span style="color:var(--red)">${a.resH?.toFixed(4)||'—'}</span></div>
     <div class="lv-row"><span class="lv-type">ORDER BLOCK ALTO</span><span style="color:var(--orange)">${a.obH?.toFixed(4)||'—'}</span></div>
     <div class="lv-row"><span class="lv-type">FVG / IMBALANCE</span><span style="color:var(--yellow)">${a.fvg?.toFixed(4)||'—'}</span></div>
     <div class="lv-row"><span class="lv-type">ORDER BLOCK BAJO</span><span style="color:var(--orange)">${a.obL?.toFixed(4)||'—'}</span></div>
-    <div class="lv-row"><span class="lv-type">SOPORTE / SSL</span><span style="color:var(--green)">${a.supL?.toFixed(4)||'—'}</span></div>
-  `;
+    <div class="lv-row"><span class="lv-type">SOPORTE / SSL</span><span style="color:var(--green)">${a.supL?.toFixed(4)||'—'}</span></div>`;
 }
 
 function selectRow(idx) {
   selectedIdx = idx;
-  document.querySelectorAll('.asset-row').forEach((r, i) => {
-    r.classList.toggle('active', i === idx);
-  });
+  document.querySelectorAll('.asset-row').forEach((r, i) => r.classList.toggle('active', i === idx));
   renderDetail(analysisResults[idx]);
 }
 
@@ -1208,9 +824,9 @@ function formatPrice(symbol, price) {
   return price.toFixed(4);
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  CHAT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function addChat(sender, html) {
   const c = document.getElementById('chatMsgs');
   const d = document.createElement('div');
@@ -1236,156 +852,83 @@ async function sendChat() {
   const top5 = analysisResults.slice(0, 5).map(a =>
     `${a.name} (${a.sym}): Tendencia ${a.masterTrend}, Score ${a.score}%, ${a.operable}. ${a.reasons.join('. ')}`
   ).join('\n');
-
   const sel = analysisResults[selectedIdx];
 
   const sys = `Eres APEX, asistente de trading institucional especializado en sintéticos de Deriv.
-Usas metodología ICT/SMC: Order Blocks, FVG, BOS, ChoCH, BSL/SSL, Premium/Discount, BISI, SIBI, IDM.
-Los datos son REALES desde el WebSocket de Deriv.
-
-TOP ACTIVOS ESCANEADOS (datos reales):
-${top5}
-
-ACTIVO SELECCIONADO ACTUALMENTE: ${sel?.name} (${sel?.sym}) — ${sel?.masterTrend} — ${sel?.score}%
+Usas metodología ICT/SMC: Order Blocks, FVG, BOS, ChoCH, BSL/SSL, Premium/Discount.
+TOP ACTIVOS: ${top5}
+ACTIVO SELECCIONADO: ${sel?.name} (${sel?.sym}) — ${sel?.masterTrend} — ${sel?.score}%
 Razones: ${sel?.reasons?.join(', ')||'—'}
-
-Responde en español, como trader profesional institucional. Máximo 130 palabras. Usa términos ICT/SMC. Sé directo y preciso.`;
+Responde en español, como trader profesional institucional. Máximo 130 palabras. Sé directo y preciso.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 300,
-        system: sys,
-        messages: [{ role: 'user', content: q }]
-      })
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 300, system: sys, messages: [{ role: 'user', content: q }] })
     });
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Error al procesar.';
-    thinking.innerHTML = `<div class="cm-from">APEX</div>${reply}`;
+    thinking.innerHTML = `<div class="cm-from">APEX</div>${data.content?.[0]?.text || 'Error al procesar.'}`;
   } catch {
     thinking.innerHTML = `<div class="cm-from">APEX</div>Motor IA temporalmente no disponible. Revisa los datos del scanner.`;
   }
   document.getElementById('chatMsgs').scrollTop = 99999;
 }
 
-// ═══════════════════════════════════════════════
-//  TELEGRAM ALERTS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
+//  TELEGRAM
+// ═══════════════════════════════════════
 const TG_TOKEN = '8406863279:AAF1cAgi2vqTPfxnSGSS2uyV_ByUUHey_Ag';
 const TG_CHAT  = '7593418397';
-
-let alertsSent = {};      // track sent alerts to avoid duplicates
+let alertsSent = {};
 let alertsEnabled = true;
-let lastPrices = {};      // track prices to detect OB touches
 
 async function sendTelegram(msg) {
-  // Use GET method with URL params to avoid CORS issues
   try {
-    const encoded = encodeURIComponent(msg);
-    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT}&text=${encoded}&parse_mode=HTML`;
+    const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT}&text=${encodeURIComponent(msg)}&parse_mode=HTML`;
     const res = await fetch(url, { method: 'GET' });
     const data = await res.json();
-    if (!data.ok) console.error('Telegram error:', data);
     return data.ok;
-  } catch(e) {
-    // Fallback: open in new tab (always works)
-    console.error('Telegram fetch error:', e);
-    return false;
-  }
+  } catch(e) { return false; }
 }
 
 async function checkAlerts() {
   if (!alertsEnabled || analysisResults.length === 0) return;
-
   const now = Date.now();
-
   for (const a of analysisResults) {
     const key_op = `operable_${a.id}`;
     const key_ob = `ob_${a.id}`;
-
-    // ── ALERTA 1: Activo nuevo OPERABLE (score >= 68) ──
     if (a.operable === 'YES' && !alertsSent[key_op]) {
       alertsSent[key_op] = now;
-
       const arrow = a.masterTrend === 'ALCISTA' ? '🟢' : a.masterTrend === 'BAJISTA' ? '🔴' : '🟡';
       const dir   = a.masterTrend === 'ALCISTA' ? '▲ LONG / COMPRA' : a.masterTrend === 'BAJISTA' ? '▼ SHORT / VENTA' : '↔ RANGO';
-
-      const msg =
-`🚨 <b>APEX — SEÑAL INSTITUCIONAL</b>
-
-${arrow} <b>${a.name} (${a.sym})</b>
-📊 Dirección: <b>${dir}</b>
-⚡ Confluencia: <b>${a.score}%</b>
-💰 Precio: <b>${a.price}</b>
-
-✅ ${a.reasons.slice(0,3).join('\n✅ ')}
-
-🔴 Resistencia: ${a.resH?.toFixed(4)||'—'}
-🟢 Soporte: ${a.supL?.toFixed(4)||'—'}
-
-⏰ ${new Date().toLocaleTimeString('es-ES')}
-— APEX Motor Institucional ICT/SMC`;
-
-      await sendTelegram(msg);
+      await sendTelegram(`🚨 <b>APEX — SEÑAL INSTITUCIONAL</b>\n\n${arrow} <b>${a.name} (${a.sym})</b>\n📊 Dirección: <b>${dir}</b>\n⚡ Confluencia: <b>${a.score}%</b>\n💰 Precio: <b>${a.price}</b>\n\n✅ ${a.reasons.slice(0,3).join('\n✅ ')}\n\n🔴 Resistencia: ${a.resH?.toFixed(4)||'—'}\n🟢 Soporte: ${a.supL?.toFixed(4)||'—'}\n\n⏰ ${new Date().toLocaleTimeString('es-ES')}\n— APEX Motor Institucional ICT/SMC`);
       addChat('apex', `📲 Alerta enviada a Telegram: <strong>${a.sym}</strong> — ${dir} (${a.score}%)`);
     }
-
-    // ── ALERTA 2: Precio tocando Order Block ──
     const price = livePrices[a.id];
     if (price && a.obH && a.obL && !alertsSent[key_ob]) {
       const touchingOB = price >= a.obL * 0.9995 && price <= a.obH * 1.0005;
       if (touchingOB) {
         alertsSent[key_ob] = now;
-
-        const msg =
-`⚡ <b>APEX — PRECIO EN ORDER BLOCK</b>
-
-🎯 <b>${a.name} (${a.sym})</b>
-💰 Precio actual: <b>${price.toFixed(4)}</b>
-📦 Order Block: <b>${a.obL?.toFixed(4)} — ${a.obH?.toFixed(4)}</b>
-📊 Tendencia: <b>${a.masterTrend}</b>
-⚡ Confluencia: <b>${a.score}%</b>
-
-⚠️ Zona institucional activa — vigilar reacción
-
-⏰ ${new Date().toLocaleTimeString('es-ES')}
-— APEX Motor Institucional ICT/SMC`;
-
-        await sendTelegram(msg);
+        await sendTelegram(`⚡ <b>APEX — PRECIO EN ORDER BLOCK</b>\n\n🎯 <b>${a.name} (${a.sym})</b>\n💰 Precio: <b>${price.toFixed(4)}</b>\n📦 OB: <b>${a.obL?.toFixed(4)} — ${a.obH?.toFixed(4)}</b>\n📊 Tendencia: <b>${a.masterTrend}</b>\n⏰ ${new Date().toLocaleTimeString('es-ES')}`);
         addChat('apex', `📲 Alerta OB enviada: <strong>${a.sym}</strong> tocando Order Block en ${price.toFixed(4)}`);
       }
     }
-
-    // Reset alert after 2 hours so it can fire again if conditions repeat
     if (alertsSent[key_op] && now - alertsSent[key_op] > 7200000) delete alertsSent[key_op];
     if (alertsSent[key_ob] && now - alertsSent[key_ob] > 7200000) delete alertsSent[key_ob];
   }
 }
 
-// Run alert check every 30 seconds
 setInterval(checkAlerts, 30000);
 
 async function testTelegram() {
-  await sendTelegram(
-`✅ <b>APEX conectado correctamente</b>
-
-🤖 Motor Institucional ICT/SMC activo
-📡 Datos en tiempo real de Deriv
-🔔 Recibirás alertas cuando:
-  • Nuevo activo OPERABLE detectado
-  • Precio tocando Order Block
-
-⏰ ${new Date().toLocaleTimeString('es-ES')}`
-  );
+  await sendTelegram(`✅ <b>APEX conectado correctamente</b>\n\n🤖 Motor Institucional ICT/SMC activo\n📡 Datos en tiempo real de Deriv\n🔔 Recibirás alertas cuando:\n  • Nuevo activo OPERABLE detectado\n  • Precio tocando Order Block\n\n⏰ ${new Date().toLocaleTimeString('es-ES')}`);
   addChat('apex', '📲 Mensaje de prueba enviado a Telegram. ¡Revisa tu canal!');
 }
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 //  UTILS
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
 function showError(msg) {
   const el = document.getElementById('loginError');
   el.textContent = '⚠ ' + msg;
